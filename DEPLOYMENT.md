@@ -152,46 +152,6 @@ Unable to prepare route [api/user] for serialization. Uses Closure.
 
 **Yechim:** Bu normal, production'da Closure route'larni controller'ga o'tkazing.
 
-### 5. Session Headers Already Sent
-```
-session_start(): Cannot start session when headers already sent
-```
-
-**Sabab:** 
-- Controller'da `session_start()` qo'lda chaqirilgan
-- Eski kod cache'da qolgan (compiled classes)
-- Laravel allaqachon session'ni boshqaradi
-
-**Yechim:** 
-1. Controller'da `session_start()` ni o'chiring
-2. Cache'ni to'liq tozalang:
-```bash
-php artisan config:clear
-php artisan cache:clear
-php artisan view:clear
-php artisan route:clear
-rm -rf storage/framework/cache/data/*
-rm -rf storage/framework/views/*
-rm -f bootstrap/cache/compiled.php
-```
-
-3. Yoki `deploy.sh` ishga tushiring (avtomatik tozalaydi)
-
-**To'g'ri kod:**
-```php
-// ❌ Noto'g'ri:
-public function main() {
-    session_start();  // Laravel allaqachon boshqaradi!
-    // ...
-}
-
-// ✅ To'g'ri:
-public function main() {
-    // Laravel automatically handles sessions
-    // ...
-}
-```
-
 ## Post-Deployment Verification
 
 1. **Check website:** https://brightbridge.uz
