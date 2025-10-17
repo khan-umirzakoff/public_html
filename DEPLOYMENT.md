@@ -159,6 +159,27 @@ Unable to prepare route [api/user] for serialization. Uses Closure.
 3. **Test AI chat:** AI assistant ishlayaptimi?
 4. **Test database:** Jobs, news, trainings ko'rinayaptimi?
 
+### Expected Output
+
+Successful deployment should show:
+```
+✅ .env file found
+✅ .env configuration validated
+✅ PHP 7.3.33
+✅ Code updated
+✅ Dependencies installed
+✅ Migrations completed
+✅ Application optimized
+✅ Permissions set
+🎉 Deployment completed successfully!
+```
+
+**Minor warnings are normal:**
+- `⚠️ Cache clear skipped` - OK if cache driver is `file`
+- `⚠️ View cache not found` - OK if views not cached yet
+- `⚠️ Route cache skipped` - OK if routes use Closures
+- `⚠️ Ownership change skipped` - OK if not running as root
+
 ## Rollback (Agar muammo bo'lsa)
 
 ```bash
