@@ -1,0 +1,53 @@
+# Laravel
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# Storage directories
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitignore
+/storage/framework/views/*
+!/storage/framework/views/.gitignore
+/storage/framework/cache/data/*
+!/storage/framework/cache/data/.gitignore
+/storage/logs/*.log
+
+# Composer
+composer.phar
+
+# IDE
+.vscode/
+.idea/
+_ide_helper.php
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Custom ignores
+/mysql-data/
+/mysql-run
+mysql.log
+*.log
+error_log
+.idx/
+.data
+
+# SQL dumps (katta fayllar)
+*.sql
+!schema.sql
+
+# Local test files
+test_env.php
+
+# PHP archives
+php74.zip
