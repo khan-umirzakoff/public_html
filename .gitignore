@@ -1,7 +1,7 @@
 # Laravel
 /node_modules
 /public/hot
-/public/storage
+#/public/storage
 /storage/*.key
 /vendor
 .env
@@ -25,9 +25,9 @@ yarn-error.log
 composer.phar
 
 # IDE
-.vscode/
-.idea/
-_ide_helper.php
+#.vscode/
+#.idea/
+#_ide_helper.php
 *.swp
 *.swo
 *~
@@ -45,9 +45,3 @@ error_log
 # SQL dumps (katta fayllar)
 *.sql
 !schema.sql
-
-# Local test files
-test_env.php
-
-# PHP archives
-php74.zip
