@@ -1,0 +1,20 @@
+[03-Jul-2025 00:35:25 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/brightbr/public_html/app/Http/Controllers/Auth/ForgotPasswordController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/app/Http/Controllers/Auth/ForgotPasswordController.php on line 8
+[21-Jul-2025 02:47:07 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/brightbr/public_html/app/Http/Controllers/Auth/RegisterController.php:11
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/app/Http/Controllers/Auth/RegisterController.php on line 11
+[24-Jul-2025 00:51:18 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/brightbr/public_html/app/Http/Controllers/Auth/LoginController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/app/Http/Controllers/Auth/LoginController.php on line 8
+[30-Jul-2025 19:52:42 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/brightbr/public_html/app/Http/Controllers/Auth/ResetPasswordController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/app/Http/Controllers/Auth/ResetPasswordController.php on line 8
+[31-Jul-2025 05:20:48 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Http\Controllers\Controller' not found in /home/brightbr/public_html/app/Http/Controllers/Auth/VerificationController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/app/Http/Controllers/Auth/VerificationController.php on line 8

@@ -1,0 +1,19 @@
+[30-Jul-2025 05:51:23 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Newscategory' not found in /home/brightbr/public_html/resources/views/admin/pages/adminnews.blade.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/resources/views/admin/pages/adminnews.blade.php on line 47
+[04-Aug-2025 14:24:51 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Category' not found in /home/brightbr/public_html/resources/views/admin/pages/adminjobs.blade.php:54
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/resources/views/admin/pages/adminjobs.blade.php on line 54
+[14-Aug-2025 15:34:26 Asia/Tashkent] PHP Warning:  Invalid argument supplied for foreach() in /home/brightbr/public_html/resources/views/admin/pages/ordersuser.blade.php on line 31
+[16-Aug-2025 03:31:23 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App' not found in /home/brightbr/public_html/resources/views/admin/pages/addtov.blade.php:5
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/resources/views/admin/pages/addtov.blade.php on line 5
+[17-Aug-2025 16:41:33 Asia/Tashkent] PHP Warning:  Invalid argument supplied for foreach() in /home/brightbr/public_html/resources/views/admin/pages/category.blade.php on line 23
+[19-Aug-2025 16:14:20 Asia/Tashkent] PHP Warning:  Invalid argument supplied for foreach() in /home/brightbr/public_html/resources/views/admin/pages/users.blade.php on line 32
+[28-Sep-2025 22:56:17 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Class 'App\Category' not found in /home/brightbr/public_html/resources/views/admin/pages/adminjobs.blade.php:54
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/resources/views/admin/pages/adminjobs.blade.php on line 54

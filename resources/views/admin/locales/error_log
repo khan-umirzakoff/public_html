@@ -1,0 +1,4 @@
+[07-Aug-2025 02:08:22 Asia/Tashkent] PHP Fatal error:  Uncaught Error: Call to undefined function route() in /home/brightbr/public_html/resources/views/admin/locales/locale.blade.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/brightbr/public_html/resources/views/admin/locales/locale.blade.php on line 2
