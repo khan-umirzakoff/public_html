@@ -27,3 +27,7 @@ php_value post_max_size 100M
 php_value max_execution_time 600
 php_value max_input_time 600
 php_value memory_limit 512M
+
+# Enable output buffering to prevent "headers already sent" errors
+php_flag output_buffering On
+php_value output_buffering 4096
