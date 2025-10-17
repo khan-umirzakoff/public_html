@@ -19,7 +19,7 @@ class IndexController extends Controller{
 
 public function main()
 {
-    session_start();
+    // Laravel automatically handles sessions - no need for session_start()
     
     $jobs = DB::table('jobs')
         ->where('status', 1)
