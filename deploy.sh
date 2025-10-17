@@ -124,6 +124,18 @@ echo "📋 Step 5: Optimizing application..."
 $PHP_CMD artisan config:clear
 $PHP_CMD artisan cache:clear 2>/dev/null || echo -e "${YELLOW}⚠️  Cache clear skipped${NC}"
 $PHP_CMD artisan view:clear 2>/dev/null || echo -e "${YELLOW}⚠️  View cache not found${NC}"
+$PHP_CMD artisan route:clear 2>/dev/null || echo -e "${YELLOW}⚠️  Route cache not found${NC}"
+
+# Clear compiled classes (important for code changes!)
+if [ -f "bootstrap/cache/compiled.php" ]; then
+    rm -f bootstrap/cache/compiled.php
+    echo -e "${GREEN}✅ Compiled classes cleared${NC}"
+fi
+
+# Clear all cached files
+rm -rf storage/framework/cache/data/* 2>/dev/null || true
+rm -rf storage/framework/views/* 2>/dev/null || true
+
 $PHP_CMD artisan config:cache
 $PHP_CMD artisan route:cache 2>/dev/null || echo -e "${YELLOW}⚠️  Route cache skipped${NC}"
 echo -e "${GREEN}✅ Application optimized${NC}"
