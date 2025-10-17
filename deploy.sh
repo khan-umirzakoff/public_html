@@ -30,6 +30,27 @@ fi
 echo -e "${BLUE}Project Directory: $PROJECT_DIR${NC}"
 cd "$PROJECT_DIR"
 
+# Check if .env exists
+if [ ! -f ".env" ]; then
+    echo -e "${RED}❌ Error: .env file not found${NC}"
+    echo "Please create .env file from .env.example"
+    exit 1
+fi
+echo -e "${GREEN}✅ .env file found${NC}"
+
+# Validate critical .env settings
+if ! grep -q "APP_KEY=base64:" .env; then
+    echo -e "${RED}❌ Error: APP_KEY not set in .env${NC}"
+    echo "Run: php artisan key:generate"
+    exit 1
+fi
+
+if ! grep -q "DB_DATABASE=" .env || ! grep -q "DB_USERNAME=" .env; then
+    echo -e "${RED}❌ Error: Database settings not configured in .env${NC}"
+    exit 1
+fi
+echo -e "${GREEN}✅ .env configuration validated${NC}"
+
 # Detect PHP command
 if command -v php &> /dev/null; then
     PHP_CMD="php"
@@ -71,12 +92,29 @@ else
     exit 1
 fi
 
+echo -e "${BLUE}Running: $COMPOSER_CMD install --no-dev --no-interaction --prefer-dist --optimize-autoloader${NC}"
 $COMPOSER_CMD install --no-dev --no-interaction --prefer-dist --optimize-autoloader
-echo -e "${GREEN}✅ Dependencies installed${NC}"
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✅ Dependencies installed${NC}"
+else
+    echo -e "${RED}❌ Composer install failed${NC}"
+    exit 1
+fi
 
 # Step 4: Run database migrations
 echo ""
 echo "📋 Step 4: Running database migrations..."
+
+# Test database connection first
+if ! $PHP_CMD artisan migrate:status &>/dev/null; then
+    echo -e "${RED}❌ Error: Cannot connect to database${NC}"
+    echo "Please check your .env database settings:"
+    echo "  - DB_HOST, DB_PORT, DB_DATABASE"
+    echo "  - DB_USERNAME, DB_PASSWORD"
+    exit 1
+fi
+
 $PHP_CMD artisan migrate --force
 echo -e "${GREEN}✅ Migrations completed${NC}"
 
@@ -93,7 +131,28 @@ echo -e "${GREEN}✅ Application optimized${NC}"
 # Step 6: Set permissions
 echo ""
 echo "📋 Step 6: Setting permissions..."
+
+# Create storage directories if they don't exist
+mkdir -p storage/framework/{sessions,views,cache}
+mkdir -p storage/framework/cache/data
+mkdir -p storage/logs
+mkdir -p bootstrap/cache
+
+# Set permissions
 chmod -R 755 storage bootstrap/cache 2>/dev/null || echo -e "${YELLOW}⚠️  Permission change failed (may need sudo)${NC}"
+
+# Fix XAMPP session directory permission (if exists)
+if [ -d "/opt/lampp/temp" ]; then
+    chmod 777 /opt/lampp/temp 2>/dev/null || echo -e "${YELLOW}⚠️  XAMPP temp permission skipped (may need sudo)${NC}"
+    # Clean old session files to prevent permission issues
+    rm -f /opt/lampp/temp/sess_* 2>/dev/null || echo -e "${YELLOW}⚠️  Session cleanup skipped (may need sudo)${NC}"
+fi
+
+# Try to set ownership (may fail without sudo, that's ok)
+if command -v chown &> /dev/null; then
+    chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || echo -e "${YELLOW}⚠️  Ownership change skipped (may need sudo)${NC}"
+fi
+
 echo -e "${GREEN}✅ Permissions set${NC}"
 
 # Step 7: Disable maintenance mode
