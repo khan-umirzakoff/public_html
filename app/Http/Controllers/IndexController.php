@@ -44,7 +44,6 @@ public function main()
     return view("pages.index", compact('jobs', 'testimonials', 'category', 'categoryJobCounts', 'news','countjobs','sponsors','sponsors2'));
 }public function jobs(Request $request)
 {
-    session_start();
     
     $countjobs = DB::table('jobs')->where('status', 1)->count();
     $query = DB::table('jobs')->where('status', 1);
@@ -93,7 +92,6 @@ public function main()
 public function about()
 {
  
-session_start();
 
 
 
@@ -107,7 +105,6 @@ session_start();
 public function category($id)
 {
  
-session_start();
     $jobs = DB::table('jobs')->where('cat_id', $id)->paginate(10); // 10 jobs per page
 
     $testimonials = DB::select("select * from testimonials");
@@ -122,7 +119,6 @@ session_start();
 public function candidatedetail($id)
 {
  
-session_start();
 
      $info = DB::select("select * from job_candidates where id = $id");
       $category = DB::select("select * from category");
@@ -134,7 +130,6 @@ session_start();
 
  public function candidate()
 {
-    session_start();
     
     $jobs = DB::table("jobs")->where("status", 1)->get();
     $testimonials = DB::table("testimonials")->get();
@@ -146,7 +141,6 @@ session_start();
     return view("pages.candidate", compact('jobs', 'testimonials', 'category', 'candidates'));
 }public function trainings()
 {
-    session_start();
     
     $trainings = Trainings::paginate(14); 
     $testimonials = DB::table("testimonials")->get();
@@ -168,7 +162,6 @@ public function training_details($id)
 
 public function job_details($id)
 {
-    session_start();
 
     $job = DB::select("select * from jobs where id = ?", [$id]);
     $testimonials = DB::select("select * from testimonials");
@@ -196,7 +189,6 @@ public function job_details($id)
   public function blogpost()
     {
      
-session_start();
          $jobs = DB::select("select * from jobs where status = 1");
          $testimonials = DB::select("select * from testimonials");
          $category = DB::select("select * from news_category");
@@ -214,7 +206,6 @@ session_start();
     }  public function newscategory($id)
     {
      
-session_start();
          $jobs = DB::select("select * from jobs where status = 1");
          $testimonials = DB::select("select * from testimonials");
          $category = DB::select("select * from news_category");
@@ -231,7 +222,6 @@ session_start();
     }  public function singleblog($id)
     {
      
-session_start();
          $jobs = DB::select("select * from jobs where status = 1");
          $testimonials = DB::select("select * from testimonials");
          $category = DB::select("select * from news_category");
@@ -250,7 +240,6 @@ session_start();
   public function contact()
     {
      
-session_start();
          $jobs = DB::select("select * from jobs  where status = 1");
          $testimonials = DB::select("select * from testimonials");
          $category = DB::select("select * from category");
@@ -292,7 +281,6 @@ session_start();
   public function login(Request $request)
     {
 
-session_start();
 $category = DB::select("select * from category");
 
 
@@ -323,7 +311,6 @@ $category = DB::select("select * from category");
   public function login2(Request $request)
     {
 
-session_start();
 $category = DB::select("select * from category");
 
 
@@ -351,7 +338,6 @@ $category = DB::select("select * from category");
         return view("pages.login2",compact('category'));
     }public function filter(Request $request)
 {
-    session_start();
 
     $query = Jobs::query()->where('status', 1);
 
@@ -410,7 +396,6 @@ $category = DB::select("select * from category");
 public function jobedit2($id, Request $request)
 {
 
-    session_start();
   if (!isset($_SESSION['company_id'])){
 
             return redirect()->route("login2");
@@ -452,7 +437,6 @@ $job = Jobs::find($id);
 
 public function jobdelete2($id)
     {
-session_start();
   if (!isset($_SESSION['company_id'])){
 
             return redirect()->route("login2");
@@ -471,7 +455,6 @@ session_start();
 
 public function cab()
 {
-    session_start();
     
     $category = DB::select("select * from category");
 
@@ -487,7 +470,6 @@ public function cab()
 }
 public function myapplications()
 {
-    session_start();
     $id = $_SESSION['candidate_id'];  // Access candidate ID from the session
 $category = DB::select("select * from category");
     // Get user details
@@ -519,7 +501,6 @@ $category = DB::select("select * from category");
 
 public function myapplications2()
 {
-    session_start();
     $category = DB::select("select * from category");
     $id = $_SESSION['company_id'];  // Get company ID from the session
 
@@ -589,7 +570,6 @@ public function viewCandidates($id)
 
 public function logup(Request $request)
 {
-    session_start();
 
 
     $category = DB::select("select * from category");
@@ -675,7 +655,6 @@ public function logup(Request $request)
 
 public function postjob(Request $request)
 {
-    session_start();
 
     $category = DB::select("select * from category");
 
@@ -749,7 +728,6 @@ public function postjob(Request $request)
 }public function addjob(Request $request)
 {
     // Start the session
-    session_start();
 
     // Get all categories for the dropdown
     $category = Category::all();
@@ -823,7 +801,6 @@ public function postjob(Request $request)
 
  public function companyprofile()
 {
-    session_start();
     
     $category = DB::select("select * from category");
 
@@ -839,7 +816,6 @@ public function postjob(Request $request)
 
 public function edit(Request $request)
 {
-    session_start();
     $candidateId = $_SESSION['candidate_id'];
   $category = DB::select("select * from category");
     // Fetch the candidate's details from the database
@@ -903,7 +879,6 @@ public function edit(Request $request)
 
 public function editcomp(Request $request)
 {
-    session_start();
     $companyId = $_SESSION['company_id'];
     $category = DB::select("select * from category");
 
@@ -961,7 +936,6 @@ public function editcomp(Request $request)
 {
     $category = DB::select("select * from category");
 
-    session_start();
 
     if (isset($_SESSION['candidate_id'])) {
         unset($_SESSION['candidate_id']); 
@@ -978,7 +952,6 @@ public function editcomp(Request $request)
 public function apply($id)
 {
 
-    session_start();
 
 $jobid = $id;
 $userid = $_SESSION['candidate_id'];
@@ -994,7 +967,6 @@ $a->save();
  return redirect()->route("successfully");
   }public function successfully()
 {
-    session_start();
 $category = DB::select("select * from category");
 
  return view("pages.succesfully",compact('category'));
