@@ -791,3 +791,23 @@
         --chat-window-width: 375px;
     }
 }
+
+/* OVERRIDE: Send Button Fix */
+.chat-input-container>#chat-send-button {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    margin-right: 4px !important;
+    flex-shrink: 0 !important;
+    background: var(--chat-primary-color) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
