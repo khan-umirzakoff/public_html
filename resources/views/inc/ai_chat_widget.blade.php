@@ -245,15 +245,24 @@ document.addEventListener('DOMContentLoaded', function() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Show toast notification
+    // Show toast notification (use global if available, fallback to local)
     function showToast(message) {
+        // Try to use global toast notification system
+        if (typeof window.showToast === 'function') {
+            window.showToast(message, 'error');
+            return;
+        }
+        
+        // Fallback to local toast
         const toast = document.getElementById('chat-toast');
-        const toastMessage = document.getElementById('toast-message');
-        toastMessage.textContent = message;
-        toast.style.display = 'block';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3000);
+        if (toast) {
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
     }
 
     // Update send button state
