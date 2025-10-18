@@ -50,14 +50,28 @@ class AIChatController extends Controller
             'last_history_item' => !empty($history) ? end($history) : null
         ]);
 
+        // Disable all output buffering for streaming
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+        
         return response()->stream(function () use ($message, $history, $images) {
+            // Set streaming-friendly settings
+            @ini_set('output_buffering', 'off');
+            @ini_set('zlib.output_compression', 'off');
+            @apache_setenv('no-gzip', '1');
+            @ini_set('implicit_flush', '1');
+            
             try {
                 // Delegate the entire function calling and streaming logic to the AIService
                 $stream = $this->aiService->streamChat($message, $history, $images);
 
                 foreach ($stream as $event) {
                     echo "data: " . json_encode($event) . "\n\n";
-                    ob_flush();
+                    
+                    if (ob_get_level() > 0) {
+                        ob_flush();
+                    }
                     flush();
                 }
 
@@ -67,13 +81,17 @@ class AIChatController extends Controller
                     'trace' => $e->getTraceAsString()
                 ]);
                 echo "data: " . json_encode(['error' => 'Xatolik yuz berdi: ' . $e->getMessage()]) . "\n\n";
-                ob_flush();
+                
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
                 flush();
             }
         }, 200, [
             'Content-Type' => 'text/event-stream',
-            'Cache-Control' => 'no-cache',
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
             'X-Accel-Buffering' => 'no',
+            'Connection' => 'keep-alive',
         ]);
     }
 
