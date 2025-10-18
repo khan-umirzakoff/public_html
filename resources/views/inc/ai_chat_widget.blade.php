@@ -607,5 +607,96 @@ document.addEventListener('DOMContentLoaded', function() {
             sendMessage();
         });
     }
+
+    // Resize functionality - Bottom Left Corner
+    let isResizing = false;
+    let startX, startY, startWidth, startHeight;
+
+    chatWindow.addEventListener('mousedown', function(e) {
+        // Check if click is in bottom-left corner (resize handle area)
+        const rect = chatWindow.getBoundingClientRect();
+        const isInResizeZone = (
+            e.clientX < rect.left + 30 &&
+            e.clientY > rect.bottom - 30
+        );
+
+        if (isInResizeZone && chatWindow.classList.contains('open')) {
+            isResizing = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            startWidth = parseInt(getComputedStyle(chatWindow).width, 10);
+            startHeight = parseInt(getComputedStyle(chatWindow).height, 10);
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            document.body.style.cursor = 'nesw-resize';
+            document.body.style.userSelect = 'none';
+        }
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isResizing) return;
+
+        const deltaX = startX - e.clientX;
+        const deltaY = startY - e.clientY;
+        
+        const newWidth = startWidth + deltaX;
+        const newHeight = startHeight + deltaY;
+
+        // Apply constraints
+        const minWidth = 350;
+        const maxWidth = 1200;
+        const minHeight = 450;
+        const maxHeight = window.innerHeight - 120;
+
+        if (newWidth >= minWidth && newWidth <= maxWidth) {
+            chatWindow.style.width = newWidth + 'px';
+        }
+        
+        if (newHeight >= minHeight && newHeight <= maxHeight) {
+            chatWindow.style.height = newHeight + 'px';
+        }
+    });
+
+    document.addEventListener('mouseup', function() {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            
+            // Save size to localStorage
+            try {
+                localStorage.setItem('jobcare_chat_width', chatWindow.style.width);
+                localStorage.setItem('jobcare_chat_height', chatWindow.style.height);
+            } catch (e) {
+                console.error('Failed to save chat size:', e);
+            }
+        }
+    });
+
+    // Load saved size on page load
+    try {
+        const savedWidth = localStorage.getItem('jobcare_chat_width');
+        const savedHeight = localStorage.getItem('jobcare_chat_height');
+        
+        if (savedWidth) chatWindow.style.width = savedWidth;
+        if (savedHeight) chatWindow.style.height = savedHeight;
+    } catch (e) {
+        console.error('Failed to load chat size:', e);
+    }
+
+    // Update cursor when hovering over resize area
+    chatWindow.addEventListener('mousemove', function(e) {
+        if (!chatWindow.classList.contains('open') || isResizing) return;
+        
+        const rect = chatWindow.getBoundingClientRect();
+        const isInResizeZone = (
+            e.clientX < rect.left + 30 &&
+            e.clientY > rect.bottom - 30
+        );
+        
+        chatWindow.style.cursor = isInResizeZone ? 'nesw-resize' : '';
+    });
 });
 </script>

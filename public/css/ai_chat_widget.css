@@ -4,10 +4,10 @@
     --chat-primary-color: #0d2d62;
     --chat-secondary-color: #00b894;
     --chat-font: 'Poppins', sans-serif;
-    --chat-window-width: 400px;
-    --chat-window-height: 550px;
+    --chat-window-width: 520px;
+    --chat-window-height: 680px;
     --chat-bg-light: #f9f9f9;
-    --chat-message-spacing: 14px;
+    --chat-message-spacing: 16px;
     --chat-border-radius: 20px;
     --chat-message-radius: 18px;
 }
@@ -31,7 +31,6 @@
     width: auto;
     background-color: var(--chat-primary-color);
     border-radius: 40px;
-    /* To'liqroq kapsula shakli uchun */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,7 +40,6 @@
     transition: transform 0.2s ease, background-color 0.2s ease;
     border: none;
     padding: 12px 20px;
-    /* Muvozanatli bo'shliq */
     color: white;
 }
 
@@ -52,7 +50,6 @@
 
 #chat-icon img {
     height: 48px;
-    /* Logotip balandligi */
     width: 48px;
     object-fit: contain;
 }
@@ -62,17 +59,15 @@
     flex-direction: column;
     text-align: left;
     line-height: 1.25;
-    /* Qatorlar orasidagi masofa */
 }
 
 .chat-icon-line1 {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
-    /* Qalinroq qilish */
 }
 
 .chat-icon-line2 {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 400;
     opacity: 0.9;
 }
@@ -84,6 +79,9 @@
     width: var(--chat-window-width);
     height: var(--chat-window-height);
     max-height: calc(100vh - 120px);
+    min-width: 350px;
+    min-height: 450px;
+    max-width: 1200px;
     border-radius: var(--chat-border-radius);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -95,6 +93,7 @@
     transform: translateY(30px) scale(0.95);
     pointer-events: none;
     transform-origin: bottom right;
+    resize: both;
 }
 
 #chat-window.open {
@@ -131,7 +130,7 @@
 }
 
 .ai-title {
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 600;
     line-height: 1.3;
     color: white !important;
@@ -294,8 +293,6 @@
     box-shadow: 0 4px 15px rgba(100, 116, 139, 0.15) !important;
 }
 
-
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -384,11 +381,11 @@
 }
 
 #ai-chat-widget .message {
-    padding: 14px 16px;
+    padding: 12px 16px;
     border-radius: var(--chat-message-radius);
     max-width: 80%;
     line-height: 1.6;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -425,7 +422,6 @@
     object-fit: cover !important;
 }
 
-/* Image preview wrapper styles */
 .image-preview-wrapper {
     position: relative;
     display: inline-block;
@@ -458,7 +454,6 @@
     font-weight: bold !important;
 }
 
-/* Message images with subtle rounded corners */
 #chat-messages .message img {
     border-radius: 8px !important;
     border: none !important;
@@ -564,7 +559,7 @@
     border: none;
     background: transparent;
     padding: 8px 4px;
-    font-size: 14px;
+    font-size: 16px;
     outline: none;
     font-weight: 400;
     color: #333;
@@ -646,6 +641,7 @@
     font-weight: bold;
     line-height: 1;
     vertical-align: middle;
+    display: inline-block;
 }
 
 .dots span:nth-child(1) {
@@ -661,10 +657,13 @@
 }
 
 @keyframes dotFade {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 0.3;
         transform: scale(1);
     }
+
     50% {
         opacity: 1;
         transform: scale(1.2);
@@ -788,14 +787,103 @@
     }
 }
 
+/* High DPI / Large screens */
 @media (min-width: 1200px) {
     :root {
-        --chat-window-width: 375px;
+        --chat-window-width: 560px;
+        --chat-window-height: 720px;
     }
 }
 
-/* OVERRIDE: Send Button Fix */
-.chat-input-container>#chat-send-button {
+@media (min-width: 1600px) {
+    :root {
+        --chat-window-width: 620px;
+        --chat-window-height: 780px;
+    }
+
+    #ai-chat-widget .message {
+        font-size: 17px;
+        padding: 14px 18px;
+    }
+
+    .ai-title {
+        font-size: 23px;
+    }
+
+    #chat-input input[type="text"] {
+        font-size: 17px;
+    }
+
+    .chat-icon-line1,
+    .chat-icon-line2 {
+        font-size: 19px;
+    }
+}
+
+@media (min-width: 2000px) {
+    :root {
+        --chat-window-width: 680px;
+        --chat-window-height: 840px;
+    }
+
+    #ai-chat-widget .message {
+        font-size: 18px;
+        padding: 16px 20px;
+    }
+
+    .ai-title {
+        font-size: 24px;
+    }
+
+    #chat-input input[type="text"] {
+        font-size: 18px;
+    }
+
+    .chat-icon-line1,
+    .chat-icon-line2 {
+        font-size: 20px;
+    }
+}
+
+/* Resize handle styling - Bottom Left */
+#chat-window::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    cursor: nesw-resize;
+    background: linear-gradient(225deg, transparent 45%, rgba(13, 45, 98, 0.25) 50%, rgba(13, 45, 98, 0.35) 55%, transparent 60%);
+    border-bottom-left-radius: var(--chat-border-radius);
+    pointer-events: none;
+    z-index: 10;
+}
+
+#chat-window.open::after {
+    pointer-events: auto;
+}
+
+#chat-window::before {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    width: 3px;
+    height: 3px;
+    background: rgba(13, 45, 98, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 11;
+}
+
+#chat-window.open::before {
+    pointer-events: none;
+}
+
+/* OVER
+RIDE: Send Button Fix */
+.chat-input-container > #chat-send-button {
     width: 36px !important;
     height: 36px !important;
     min-width: 36px !important;
