@@ -322,7 +322,18 @@ class RAGService
         switch ($table) {
             case 'jobs':
                 $url = "{$this->baseUrl}/job_details/{$item->id}";
-                $content = "Ish e'loni: **{$item->title}**\n- Kompaniya: {$item->company}\n- Joylashuv: {$item->location}";
+                $content = "💼 Ish e'loni: **{$item->title}**\n";
+                $content .= "- Kompaniya: {$item->company}\n";
+                $content .= "- Joylashuv: {$item->location}\n";
+                if (!empty($item->type)) {
+                    $content .= "- Ish turi: {$item->type}\n";
+                }
+                if (!empty($item->salary)) {
+                    $content .= "- Maosh: {$item->salary}\n";
+                }
+                if (!empty($item->info)) {
+                    $content .= "- Qisqacha: " . mb_substr(strip_tags($item->info), 0, 100) . "...\n";
+                }
                 break;
             case 'news':
                 $url = "{$this->baseUrl}/single-blog/{$item->id}"; // Assuming single-blog is the correct route for news
