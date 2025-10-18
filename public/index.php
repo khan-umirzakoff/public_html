@@ -7,6 +7,15 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
+// Disable output buffering for SSE streaming
+if (strpos($_SERVER['REQUEST_URI'] ?? '', '/api/ai/chat') !== false) {
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+    ini_set('output_buffering', 'off');
+    ini_set('zlib.output_compression', 'off');
+}
+
 define('LARAVEL_START', microtime(true));
 
 /*
