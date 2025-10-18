@@ -15,7 +15,8 @@ class RAGService
     public function __construct(AIService $aiService)
     {
         $this->aiService = $aiService;
-        $this->baseUrl = rtrim(env('APP_URL', 'http://localhost:8000'), '/');
+        // Use dynamic URL from request if available, fallback to config
+        $this->baseUrl = rtrim(request()->getSchemeAndHttpHost() ?: config('app.url', 'http://localhost:8000'), '/');
     }
 
     /**
