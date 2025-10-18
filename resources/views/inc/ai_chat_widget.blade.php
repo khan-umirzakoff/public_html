@@ -43,16 +43,16 @@
     <button id="chat-icon" aria-label="Open Chat">
         <img src="{{ asset('upl/1111.png') }}" alt="Open Chat">
         <div class="chat-icon-text">
-            <span class="chat-icon-line1">JobCare</span>
+            <span class="chat-icon-line1">BrightBridge</span>
             <span class="chat-icon-line2">Assistant</span>
         </div>
     </button>
     <div id="chat-window" role="dialog" aria-modal="true" aria-labelledby="chat-header-title">
         <div id="chat-header">
             <div class="chat-title">
-                <img src="{{ asset('upl/1111.png') }}" alt="JobCare Logo" class="chat-logo">
+                <img src="{{ asset('upl/1111.png') }}" alt="BrightBridge Logo" class="chat-logo">
                 <div class="brand-text">
-                    <h2 id="chat-header-title" class="ai-title">JobCare Assistant</h2>
+                    <h2 id="chat-header-title" class="ai-title">BrightBridge Assistant</h2>
                 </div>
             </div>
             <button id="clear-chat" aria-label="New Chat" style="margin-right: 10px;" title="Start New Chat">
@@ -64,7 +64,13 @@
         </div>
         <div id="chat-messages" role="log" aria-live="polite">
            <div class="bot-message message">
-                Hello! I'm JobCare AI Assistant. How can I help you?
+                👋 Welcome to <strong>BrightBridge</strong>!<br><br>
+                I'm your AI career assistant. I can help you:<br>
+                • Find the perfect job opportunities<br>
+                • Discover training programs to boost your skills<br>
+                • Get career advice and guidance<br>
+                • Answer questions about our platform<br><br>
+                What would you like to explore today?
             </div>
         </div>
         
@@ -326,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // LocalStorage functions
     function saveChatHistory() {
         try {
-            localStorage.setItem('jobcare_ai_history', JSON.stringify(chatHistory));
+            localStorage.setItem('brightbridge_ai_history', JSON.stringify(chatHistory));
         } catch (e) {
             console.error('LocalStorage error:', e);
         }
@@ -334,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadChatHistory() {
         try {
-            const saved = localStorage.getItem('jobcare_ai_history');
+            const saved = localStorage.getItem('brightbridge_ai_history');
             if (saved) {
                 const history = JSON.parse(saved);
 
@@ -372,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function clearChatHistory() {
         chatHistory = [];
-        localStorage.removeItem('jobcare_ai_history');
+        localStorage.removeItem('brightbridge_ai_history');
         
         // Remove from UI as well (except initial message)
         const messages = chatMessages.querySelectorAll('.message');
@@ -700,8 +706,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Save size to localStorage
             try {
-                localStorage.setItem('jobcare_chat_width', chatWindow.style.width);
-                localStorage.setItem('jobcare_chat_height', chatWindow.style.height);
+                localStorage.setItem('brightbridge_chat_width', chatWindow.style.width);
+                localStorage.setItem('brightbridge_chat_height', chatWindow.style.height);
             } catch (e) {
                 console.error('Failed to save chat size:', e);
             }
@@ -710,8 +716,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load saved size on page load
     try {
-        const savedWidth = localStorage.getItem('jobcare_chat_width');
-        const savedHeight = localStorage.getItem('jobcare_chat_height');
+        const savedWidth = localStorage.getItem('brightbridge_chat_width');
+        const savedHeight = localStorage.getItem('brightbridge_chat_height');
         
         if (savedWidth) chatWindow.style.width = savedWidth;
         if (savedHeight) chatWindow.style.height = savedHeight;
