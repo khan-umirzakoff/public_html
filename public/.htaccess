@@ -5,16 +5,6 @@
 
     RewriteEngine On
 
-    # Disable output buffering for SSE streaming
-    <IfModule mod_headers.c>
-        Header set X-Accel-Buffering "no"
-    </IfModule>
-    
-    # Disable mod_deflate for event-stream
-    <IfModule mod_deflate.c>
-        SetEnvIfNoCase Request_URI "^/api/ai/chat" no-gzip=1
-    </IfModule>
-
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
