@@ -153,8 +153,9 @@
 <div id="loading-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; align-items: center; justify-content: center;">
     <div class="text-center text-white">
         <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status"></div>
-        <h4 class="mt-4">Processing File...</h4>
-        <p class="text-muted">Please wait while the file is uploaded and processed.</p>
+        <h4 class="mt-4">Generating Embeddings...</h4>
+        <p class="text-muted">Please wait. This may take a few minutes.</p>
+        <p class="text-warning font-weight-bold">⚠️ Do not close or refresh this page!</p>
     </div>
 </div>
 
