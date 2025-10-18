@@ -79,9 +79,12 @@ class GeminiAIService implements AIService
 
             $fullFunctionCall = $this->assembleFunctionCall($functionCallParts);
             
-            yield ['tool_start' => ['name' => $fullFunctionCall['name'], 'args' => $fullFunctionCall['args']]];
+            // Convert args to array for executeTool (it expects array)
+            $argsArray = is_object($fullFunctionCall['args']) ? (array)$fullFunctionCall['args'] : $fullFunctionCall['args'];
+            
+            yield ['tool_start' => ['name' => $fullFunctionCall['name'], 'args' => $argsArray]];
 
-            $toolResult = $ragService->executeTool($fullFunctionCall['name'], $fullFunctionCall['args']);
+            $toolResult = $ragService->executeTool($fullFunctionCall['name'], $argsArray);
             
             // Collect sources from the tool result if they exist
             if (isset($toolResult['sources']) && is_array($toolResult['sources'])) {
@@ -127,10 +130,22 @@ class GeminiAIService implements AIService
                 'has_tools' => isset($payload['tools']),
                 'has_systemInstruction' => isset($payload['systemInstruction']),
                 'tools_count' => isset($payload['tools'][0]['functionDeclarations']) ? count($payload['tools'][0]['functionDeclarations']) : 0
-            ]
+            ],
+            'payload' => json_encode($payload, JSON_PRETTY_PRINT)
         ]);
 
-        $response = $this->client->post($url, ['json' => $payload, 'stream' => true]);
+        try {
+            $response = $this->client->post($url, ['json' => $payload, 'stream' => true]);
+        } catch (RequestException $e) {
+            $errorBody = $e->hasResponse() ? $e->getResponse()->getBody()->getContents() : 'No response body';
+            Log::error('Gemini API Error', [
+                'status' => $e->hasResponse() ? $e->getResponse()->getStatusCode() : 'N/A',
+                'error_body' => $errorBody,
+                'payload' => json_encode($payload, JSON_PRETTY_PRINT)
+            ]);
+            throw $e;
+        }
+        
         $body = $response->getBody();
 
         while (!$body->eof()) {
@@ -168,17 +183,27 @@ class GeminiAIService implements AIService
         // This is a simplified assembly. A more robust solution might need to merge JSON objects.
         // For now, we assume args come in one complete chunk.
         $decodedArgs = json_decode(str_replace('}{', ',', $argsJson), true);
-        return ['name' => $name, 'args' => $decodedArgs ?? []];
+        
+        // Ensure args is always an object (associative array), not an indexed array
+        if ($decodedArgs === null || $decodedArgs === []) {
+            $decodedArgs = new \stdClass(); // Empty object for JSON encoding
+        }
+        
+        return ['name' => $name, 'args' => $decodedArgs];
     }
 
     private function buildContents(string $prompt, array $history, array $images): array
     {
         $contents = [];
         foreach ($history as $message) {
-            $contents[] = [
-                'role' => $message['role'] ?? 'user',
-                'parts' => [['text' => $message['text']]]
-            ];
+            // Skip messages that have function call metadata (tool_start, args, etc.)
+            // Only include actual text messages
+            if (isset($message['text']) && !empty($message['text'])) {
+                $contents[] = [
+                    'role' => $message['role'] ?? 'user',
+                    'parts' => [['text' => $message['text']]]
+                ];
+            }
         }
 
         $userParts = [];
