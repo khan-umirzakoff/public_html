@@ -137,7 +137,16 @@
                                     <td>
                                         <!-- Edit and Delete buttons in the same row -->
                                         <a href="{{route('jobedit',['id'=>$job->id])}}" class="btn btn-warning">Edit</a>
-                                        <a href="{{route('jobdelete',['id'=>$job->id])}}" class="btn btn-danger">Delete</a>
+                                        <a href="javascript:void(0)" class="btn btn-danger"
+                                           onclick="confirmAction({
+                                               title: 'Delete Job',
+                                               message: 'Are you sure you want to delete this job? This action cannot be undone.',
+                                               confirmText: 'Yes, Delete',
+                                               confirmClass: 'btn-danger',
+                                               onConfirm: function() { window.location.href = '{{route('jobdelete',['id'=>$job->id])}}'; }
+                                           });">
+                                           Delete
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

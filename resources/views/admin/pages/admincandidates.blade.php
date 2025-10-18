@@ -77,7 +77,16 @@
                                     <td>
                                         <!-- Edit and Delete buttons in the same row -->
                                         <a href="{{ route('candedit', ['id' => $item->id]) }}" class="btn btn-warning btn-sm">Edit</a>
-                                        <a href="{{ route('canddelete', ['id' => $item->id]) }}" class="btn btn-danger btn-sm">Delete</a>
+                                        <a href="javascript:void(0)" class="btn btn-danger btn-sm"
+                                           onclick="confirmAction({
+                                               title: 'Delete Candidate',
+                                               message: 'Are you sure you want to delete this candidate? This action cannot be undone.',
+                                               confirmText: 'Yes, Delete',
+                                               confirmClass: 'btn-danger',
+                                               onConfirm: function() { window.location.href = '{{ route('canddelete', ['id' => $item->id]) }}'; }
+                                           });">
+                                           Delete
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

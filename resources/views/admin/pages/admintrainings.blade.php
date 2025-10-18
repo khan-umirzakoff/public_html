@@ -69,8 +69,14 @@
                                     <td>
                                         <!-- Edit and Delete buttons in the same row -->
                                         <a href="{{route('edittrainings',['id'=>$item->id])}}" class="btn btn-warning">Edit</a>
-                                        <a href="{{route('delltrainings',['id'=>$item->id])}}" class="btn btn-danger"
-                                           onclick="return confirm('Are you sure you want to delete this training?');">
+                                        <a href="javascript:void(0)" class="btn btn-danger"
+                                           onclick="confirmAction({
+                                               title: 'Delete Training',
+                                               message: 'Are you sure you want to delete this training? This action cannot be undone.',
+                                               confirmText: 'Yes, Delete',
+                                               confirmClass: 'btn-danger',
+                                               onConfirm: function() { window.location.href = '{{route('delltrainings',['id'=>$item->id])}}'; }
+                                           });">
                                            Delete
                                         </a>
                                     </td>

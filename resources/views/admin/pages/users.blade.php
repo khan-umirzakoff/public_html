@@ -61,7 +61,15 @@
 
                         <td class="dtr-control sorting_1" tabindex="0"><a href="{{route("ordersuser",['id'=>$item['id']])}}"><font color="blue">Orders</font></a></td>
                         <td class="dtr-control sorting_1" tabindex="0"><a href="{{route("edituser",['id'=>$item['id']])}}"><font color="blue">Edit</font></a></td>
-                        <td class="dtr-control sorting_1" tabindex="0"><a href="{{route("delluser",['id'=>$item['id']])}}"><font color="blue">Delete</font></a></td>
+                        <td class="dtr-control sorting_1" tabindex="0">
+                            <a href="javascript:void(0)" onclick="confirmAction({
+                                title: 'Delete User',
+                                message: 'Are you sure you want to delete this user? This action cannot be undone.',
+                                confirmText: 'Yes, Delete',
+                                confirmClass: 'btn-danger',
+                                onConfirm: function() { window.location.href = '{{route("delluser",['id'=>$item['id']])}}'; }
+                            });"><font color="blue">Delete</font></a>
+                        </td>
 
                     </tr><?php }?>
 

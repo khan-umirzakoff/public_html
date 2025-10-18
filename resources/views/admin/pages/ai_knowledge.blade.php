@@ -77,9 +77,14 @@
                         </button>
                         <small class="ai-form-text text-center d-block">Generates 10 per category. Press again to continue.</small>
                     </form>
-                    <form method="POST" action="{{ route('ai-knowledge.seed-default') }}" onsubmit="return confirm('Are you sure you want to load default data? This may overwrite existing default entries.')">
+                    <form method="POST" action="{{ route('ai-knowledge.seed-default') }}" id="seedDefaultForm">
                         @csrf
-                        <button type="submit" class="ai-btn ai-btn-secondary w-100">
+                        <button type="button" class="ai-btn ai-btn-secondary w-100" onclick="confirmFormSubmit(document.getElementById('seedDefaultForm'), {
+                            title: 'Seed Default Data',
+                            message: 'Are you sure you want to load default data? This may overwrite existing default entries.',
+                            confirmText: 'Yes, Load Data',
+                            confirmClass: 'btn-warning'
+                        })">
                              <svg class="ai-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                             Seed Default Data
                         </button>
@@ -178,16 +183,26 @@
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px; height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536L16.732 3.732z"></path></svg>
                                     </button>
                                     @if(!$item->embedding || $item->embedding == '[]' || $item->embedding == '')
-                                    <form method="POST" action="{{ route('ai-knowledge.generate-embedding', $item->id) }}" style="display:inline" onsubmit="return confirm('Generate embedding for this item?')">
+                                    <form method="POST" action="{{ route('ai-knowledge.generate-embedding', $item->id) }}" style="display:inline" id="embedForm{{ $item->id }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-warning mr-2" title="Generate Embedding">
+                                        <button type="button" class="btn btn-sm btn-warning mr-2" title="Generate Embedding" onclick="confirmFormSubmit(document.getElementById('embedForm{{ $item->id }}'), {
+                                            title: 'Generate Embedding',
+                                            message: 'Generate embedding for this item?',
+                                            confirmText: 'Yes, Generate',
+                                            confirmClass: 'btn-warning'
+                                        })">
                                             <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px; height:16px;"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12C18,14.22 16.79,16.16 15,17.2V19.5C17.89,18.15 20,15.32 20,12C20,7.58 16.42,4 12,4V6M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10Z"/></svg>
                                         </button>
                                     </form>
                                     @endif
-                                    <form method="POST" action="{{ route('ai-knowledge.delete', $item->id) }}" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this item?')">
+                                    <form method="POST" action="{{ route('ai-knowledge.delete', $item->id) }}" style="display:inline" id="deleteForm{{ $item->id }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                        <button type="button" class="btn btn-sm btn-danger" title="Delete" onclick="confirmFormSubmit(document.getElementById('deleteForm{{ $item->id }}'), {
+                                            title: 'Delete Knowledge',
+                                            message: 'Are you sure you want to delete this item? This action cannot be undone.',
+                                            confirmText: 'Yes, Delete',
+                                            confirmClass: 'btn-danger'
+                                        })">
                                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:16px; height:16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                     </form>

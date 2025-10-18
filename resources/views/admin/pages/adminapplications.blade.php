@@ -55,7 +55,16 @@
 
                 <td>
                     <!-- Delete button -->
-                    <a href="{{ route('applicationdelete', ['id' => $item->id]) }}" class="btn btn-danger">Delete</a>
+                    <a href="javascript:void(0)" class="btn btn-danger"
+                       onclick="confirmAction({
+                           title: 'Delete Application',
+                           message: 'Are you sure you want to delete this application? This action cannot be undone.',
+                           confirmText: 'Yes, Delete',
+                           confirmClass: 'btn-danger',
+                           onConfirm: function() { window.location.href = '{{ route('applicationdelete', ['id' => $item->id]) }}'; }
+                       });">
+                       Delete
+                    </a>
                 </td>
             </tr>
         @endif

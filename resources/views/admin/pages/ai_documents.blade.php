@@ -240,25 +240,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Make delete function global
     window.deleteDocument = function(id) {
-        if (confirm("Are you sure you want to delete this document?")) {
-            fetch(`/admin/ai-documents/${id}`, {
-                method: 'DELETE',
-                headers: { 'X-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }
-            })
-            .then(response => response.json().then(data => ({ ok: response.ok, data })))
-            .then(({ ok, data }) => {
-                if (ok) {
-                    showMessage('success', data.message || 'Document deleted. Reloading...');
-                    setTimeout(() => window.location.reload(), 1500);
-                } else {
-                    showMessage('error', `Error: ${data.error || 'Could not delete document.'}`);
-                }
-            })
-            .catch(error => {
-                console.error('Delete error:', error);
-                showMessage('error', 'A network error occurred during deletion.');
-            });
-        }
+        confirmAction({
+            title: 'Delete Document',
+            message: 'Are you sure you want to delete this document? This action cannot be undone.',
+            confirmText: 'Yes, Delete',
+            confirmClass: 'btn-danger',
+            onConfirm: function() {
+                fetch(`/admin/ai-documents/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'X-CSRF-TOKEN': csrfToken, 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(response => response.json().then(data => ({ ok: response.ok, data })))
+                .then(({ ok, data }) => {
+                    if (ok) {
+                        showMessage('success', data.message || 'Document deleted. Reloading...');
+                        setTimeout(() => window.location.reload(), 1500);
+                    } else {
+                        showMessage('error', `Error: ${data.error || 'Could not delete document.'}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Delete error:', error);
+                    showMessage('error', 'A network error occurred during deletion.');
+                });
+            }
+        });
     };
 });
 </script>

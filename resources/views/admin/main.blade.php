@@ -99,6 +99,9 @@
 </div>
 <!-- ./wrapper -->
 
+<!-- Global Confirmation Modal -->
+@include('admin.inc.confirm_modal')
+
 <!-- Additional CSS files removed - using AdminLTE built-in styles -->
 <!--[if lt IE 9]>
 <script src="/public/js/html5shiv.js"></script>
