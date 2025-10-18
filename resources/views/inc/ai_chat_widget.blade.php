@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/ai_chat_widget.css') }}">
+<link rel="stylesheet" href="{{ asset('css/ai_chat_widget.css') }}?v=20241018">
 <style>
     .sources-container {
         margin-top: 12px;
