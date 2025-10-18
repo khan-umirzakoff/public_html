@@ -120,7 +120,12 @@ class RAGService
             }
 
             // Sort by similarity and take top 5
-            usort($allResults, fn($a, $b) => $b['similarity'] <=> $a['similarity']);
+            usort($allResults, function($a, $b) {
+                if ($b['similarity'] == $a['similarity']) {
+                    return 0;
+                }
+                return ($b['similarity'] > $a['similarity']) ? 1 : -1;
+            });
             $topResults = array_slice($allResults, 0, 5);
 
             $content = "Topilgan ma'lumotlar:\n\n";
@@ -130,7 +135,9 @@ class RAGService
 
             $sources = array_map(function($result) {
                 return ['url' => $result['url'], 'title' => $result['title']];
-            }, array_filter($topResults, fn($r) => !empty($r['url'])));
+            }, array_filter($topResults, function($r) {
+                return !empty($r['url']);
+            }));
 
             return ['content' => trim($content), 'sources' => $sources];
 
@@ -222,7 +229,12 @@ class RAGService
         }
 
         // Sort by similarity and return top 3 chunks (to leave room for other results)
-        usort($chunkResults, fn($a, $b) => $b['similarity'] <=> $a['similarity']);
+        usort($chunkResults, function($a, $b) {
+            if ($b['similarity'] == $a['similarity']) {
+                return 0;
+            }
+            return ($b['similarity'] > $a['similarity']) ? 1 : -1;
+        });
         return array_slice($chunkResults, 0, 3);
     }
 
@@ -336,7 +348,12 @@ class RAGService
                  $results[] = ['item' => $item, 'similarity' => $this->cosineSimilarity($queryEmbedding, $itemEmbedding)];
             }
         }
-        usort($results, fn($a, $b) => $b['similarity'] <=> $a['similarity']);
+        usort($results, function($a, $b) {
+            if ($b['similarity'] == $a['similarity']) {
+                return 0;
+            }
+            return ($b['similarity'] > $a['similarity']) ? 1 : -1;
+        });
         return array_slice($results, 0, 5);
     }
 
