@@ -128,8 +128,11 @@
                                 <input type="text" name="description" id="description" class="ai-form-control" placeholder="Internal note for this data" value="{{ old('description') }}">
                             </div>
                             <div class="col-md-4 ai-form-group">
-                                <label for="priority" class="ai-form-label">Priority (0-5)</label>
-                                <input type="number" name="priority" id="priority" class="ai-form-control" min="0" max="5" value="{{ old('priority', 0) }}">
+                                <label for="priority" class="ai-form-label priority-label">
+                                    Priority <span class="text-danger">*</span>
+                                    <small class="d-block text-muted" style="font-weight: normal; font-size: 11px;">0=Low, 5=High</small>
+                                </label>
+                                <input type="number" name="priority" id="priority" class="ai-form-control priority-input" min="0" max="5" value="{{ old('priority', '') }}" required placeholder="0-5">
                             </div>
                         </div>
                     </div>
@@ -228,7 +231,10 @@
                                             <div class="form-group"><label for="value{{ $item->id }}">Value</label><textarea name="value" id="value{{ $item->id }}" class="form-control" rows="4" required>{{ $item->value }}</textarea></div>
                                             <div class="row">
                                                 <div class="col-md-8 form-group"><label for="description{{ $item->id }}">Description</label><input type="text" name="description" id="description{{ $item->id }}" class="form-control" value="{{ $item->description }}"></div>
-                                                <div class="col-md-4 form-group"><label for="priority{{ $item->id }}">Priority</label><input type="number" name="priority" id="priority{{ $item->id }}" class="form-control" min="0" max="5" value="{{ $item->priority ?? 0 }}"></div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="priority{{ $item->id }}">Priority <span class="text-danger">*</span> <small class="text-muted">(0-5)</small></label>
+                                                    <input type="number" name="priority" id="priority{{ $item->id }}" class="form-control" min="0" max="5" value="{{ $item->priority ?? '' }}" required placeholder="0-5">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -274,5 +280,46 @@ function showBatchLoading() {
     document.getElementById('batch-loading-overlay').style.display = 'flex';
     return true; // Allow form submission
 }
+
+// Priority field validation and highlight
+document.addEventListener('DOMContentLoaded', function() {
+    const priorityInputs = document.querySelectorAll('input[name="priority"]');
+    
+    priorityInputs.forEach(function(input) {
+        // Add visual feedback on blur if empty
+        input.addEventListener('blur', function() {
+            if (this.value === '') {
+                this.style.borderColor = '#dc3545';
+                this.style.backgroundColor = '#fff5f5';
+            }
+        });
+        
+        // Remove error styling when user types
+        input.addEventListener('input', function() {
+            if (this.value !== '') {
+                this.style.borderColor = '#ffc107';
+                this.style.backgroundColor = '#fffbf0';
+            }
+        });
+    });
+    
+    // Form submission validation
+    const forms = document.querySelectorAll('form[action*="ai-knowledge"]');
+    forms.forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            const priorityInput = this.querySelector('input[name="priority"]');
+            if (priorityInput && priorityInput.value === '') {
+                e.preventDefault();
+                priorityInput.focus();
+                priorityInput.style.borderColor = '#dc3545';
+                priorityInput.style.backgroundColor = '#fff5f5';
+                
+                // Show alert
+                alert('Please enter a priority value (0-5)');
+                return false;
+            }
+        });
+    });
+});
 </script>
 @endsection

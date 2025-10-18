@@ -481,3 +481,29 @@
         width: 100%;
     }
 }
+
+
+/* ===================================================================
+//  Priority Field Highlight
+// ==================================================================== */
+
+.priority-label {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.priority-input {
+    border: 2px solid #ffc107 !important;
+    background-color: #fffbf0;
+}
+
+.priority-input:focus {
+    border-color: #ff9800 !important;
+    background-color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.priority-input::placeholder {
+    color: #999;
+    font-weight: 500;
+}
