@@ -127,12 +127,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Main button click to open/close window
         chatIcon.addEventListener('click', function(event) {
             event.stopPropagation();
+            const isOpening = !chatWindow.classList.contains('open');
             chatWindow.classList.toggle('open');
+            
+            // Prevent body scroll on mobile when chat is open
+            if (window.innerWidth <= 480) {
+                if (isOpening) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
         });
 
         // Close button click to close window
         closeChat.addEventListener('click', function() {
             chatWindow.classList.remove('open');
+            
+            // Restore body scroll
+            if (window.innerWidth <= 480) {
+                document.body.style.overflow = '';
+            }
         });
 
         // New chat modal
@@ -174,6 +189,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 isUserScrolling = false;
             }
         });
+
+        // Prevent body scroll when scrolling chat messages
+        chatMessages.addEventListener('touchmove', function(e) {
+            e.stopPropagation();
+        }, { passive: true });
+
+        chatMessages.addEventListener('wheel', function(e) {
+            const isScrollable = chatMessages.scrollHeight > chatMessages.clientHeight;
+            const isAtTop = chatMessages.scrollTop === 0;
+            const isAtBottom = chatMessages.scrollTop + chatMessages.clientHeight >= chatMessages.scrollHeight - 1;
+            
+            if (isScrollable) {
+                if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
+                    e.preventDefault();
+                }
+                e.stopPropagation();
+            }
+        }, { passive: false });
 
         // Image upload
         if (chatImageButton && chatImageInput) {

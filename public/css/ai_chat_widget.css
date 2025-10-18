@@ -737,16 +737,18 @@
     #ai-chat-widget {
         bottom: 20px;
         right: 10px;
-        left: 10px;
+        left: auto;
     }
 
     #chat-window {
-        width: 100%;
+        position: fixed;
+        width: calc(100vw - 20px);
         height: calc(100vh - 100px);
         max-height: calc(100vh - 100px);
-        bottom: 80px;
-        right: 0;
-        left: 0;
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        top: 10px;
     }
 
     #chat-icon {
