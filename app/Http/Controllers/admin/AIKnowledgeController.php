@@ -213,9 +213,83 @@ class AIKnowledgeController extends Controller
             $processed = 0;
             $failed = 0;
 
-            // Process Jobs, News, Trainings, Knowledge... (logic remains the same)
+            // Process Jobs (10 at a time)
+            $jobs = \App\Jobs::whereNull('embedding')->take(10)->get();
+            foreach ($jobs as $job) {
+                try {
+                    $text = "Lavozim: {$job->title}. Kompaniya: {$job->company}. Joylashuv: {$job->location}. " .
+                            "Ma'lumot: " . strip_tags($job->info);
+                    $embedding = $this->aiService->embed($text);
+                    \App\Jobs::where('id', $job->id)->update(['embedding' => json_encode($embedding)]);
+                    $processed++;
+                    usleep(300000); // 0.3 second delay
+                } catch (\Exception $e) {
+                    Log::error("Job embedding failed", ['id' => $job->id, 'error' => $e->getMessage()]);
+                    $failed++;
+                }
+            }
 
-            // ... (omitting the processing loops for brevity as they contain no user-facing text)
+            // Process News (10 at a time)
+            $news = \App\News::whereNull('embedding')->take(10)->get();
+            foreach ($news as $item) {
+                try {
+                    $text = "Sarlavha: {$item->title}. Mazmun: " . strip_tags($item->desc);
+                    $embedding = $this->aiService->embed($text);
+                    \App\News::where('id', $item->id)->update(['embedding' => json_encode($embedding)]);
+                    $processed++;
+                    usleep(300000);
+                } catch (\Exception $e) {
+                    Log::error("News embedding failed", ['id' => $item->id, 'error' => $e->getMessage()]);
+                    $failed++;
+                }
+            }
+
+            // Process Trainings (10 at a time)
+            $trainings = \App\Trainings::whereNull('embedding')->take(10)->get();
+            foreach ($trainings as $training) {
+                try {
+                    $text = "Trening: {$training->title}. Tavsif: " . strip_tags($training->description);
+                    $embedding = $this->aiService->embed($text);
+                    \App\Trainings::where('id', $training->id)->update(['embedding' => json_encode($embedding)]);
+                    $processed++;
+                    usleep(300000);
+                } catch (\Exception $e) {
+                    Log::error("Training embedding failed", ['id' => $training->id, 'error' => $e->getMessage()]);
+                    $failed++;
+                }
+            }
+
+            // Process AI Knowledge (10 at a time)
+            $knowledge = AiKnowledge::where(function($q) {
+                $q->whereNull('embedding')->orWhere('embedding', '');
+            })->take(10)->get();
+            foreach ($knowledge as $item) {
+                try {
+                    $text = "Kategoriya: {$item->category}. Kalit: {$item->key}. Qiymat: {$item->value}. Tavsif: {$item->description}";
+                    $embedding = $this->aiService->embed($text);
+                    $item->update(['embedding' => json_encode($embedding)]);
+                    $processed++;
+                    usleep(300000);
+                } catch (\Exception $e) {
+                    Log::error("Knowledge embedding failed", ['id' => $item->id, 'error' => $e->getMessage()]);
+                    $failed++;
+                }
+            }
+
+            // Process AI Documents (10 at a time)
+            $documents = DB::table('ai_documents')->whereNull('embedding')->take(10)->get();
+            foreach ($documents as $doc) {
+                try {
+                    $text = "Hujjat: {$doc->title}. Kategoriya: {$doc->category}. Mazmun: " . strip_tags($doc->content);
+                    $embedding = $this->aiService->embed($text);
+                    DB::table('ai_documents')->where('id', $doc->id)->update(['embedding' => json_encode($embedding)]);
+                    $processed++;
+                    usleep(300000);
+                } catch (\Exception $e) {
+                    Log::error("Document embedding failed", ['id' => $doc->id, 'error' => $e->getMessage()]);
+                    $failed++;
+                }
+            }
 
             Log::info("Batch embedding completed", ['processed' => $processed, 'failed' => $failed]);
 
